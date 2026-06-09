@@ -1,15 +1,8 @@
 # Judging a Review by its Cover
 
-Code and data for testing whether LLM-as-judge peer-review metrics capture
-substantive review quality beyond surface-level linguistic form.
+Code and data for paper: Judging a Review by its Cover: A Reliability Analysis of
+LLM-based Peer Review Evaluation Metrics
 
-A review can score highly because it is fluent and polished, not because it
-offers strong evaluation. This is especially relevant for AI-assisted
-reviewing, where an LLM may improve clarity while preserving the reviewer's
-underlying judgments. This archive lets you reproduce the paper's statistical
-framework: compare original human reviews **R** with meaning-preserving
-rewrites **R′**, then test whether metric scores change when evaluative
-content is held fixed.
 
 ## Research question
 
