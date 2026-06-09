@@ -1,0 +1,937 @@
+{
+  "human": {
+    "llm_judge_sample": {
+      "judge_model": "gpt-5-mini",
+      "sample_size": 20,
+      "total_papers": 20,
+      "evaluated_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "averaged": {
+        "review_inspector__fairness": 4.168333333333333,
+        "actionability__actionability_score": 0.9378368478898068,
+        "review_inspector__objectivity": 3.8983333333333334,
+        "actionability__actionable_insights": 27.4,
+        "review_inspector__relevance_alignment": 5.0,
+        "review_inspector__usage_of_technical_terms": 4.660833333333334,
+        "sxs_evaluation__analytical_depth": {
+          "mode": "b",
+          "distribution": {
+            "b": 0.65,
+            "a": 0.35
+          },
+          "n": 20
+        },
+        "hprr__criticism": 0.378,
+        "review_inspector__clarity_and_readability": 4.318333333333333,
+        "actionability__total_insights": 29.25,
+        "hprr__suggestion_and_solution": 0.194,
+        "hprr__presentation_and_reporting": 0.134,
+        "hprr__materials_and_methods": 0.44299999999999995,
+        "review_inspector__overall_score_100": 77.93833333333333,
+        "pairwise_comparison__communication_clarity": {
+          "mode": "b",
+          "distribution": {
+            "b": 0.4,
+            "a": 0.3,
+            "tie": 0.25,
+            "no_match": 0.05
+          },
+          "n": 20
+        },
+        "pairwise_comparison__overall_judgment": {
+          "mode": "a",
+          "distribution": {
+            "a": 0.4,
+            "b": 0.35,
+            "tie": 0.2,
+            "no_match": 0.05
+          },
+          "n": 20
+        },
+        "sxs_evaluation__technical_accuracy": {
+          "mode": "b",
+          "distribution": {
+            "b": 0.45,
+            "a": 0.45,
+            "tie": 0.1
+          },
+          "n": 20
+        },
+        "review_inspector__constructiveness": 4.136666666666667,
+        "sxs_evaluation__overall": {
+          "mode": "b",
+          "distribution": {
+            "b": 0.65,
+            "a": 0.3,
+            "tie": 0.05
+          },
+          "n": 20
+        },
+        "review_inspector__comprehensiveness": 3.7649999999999997,
+        "hprr__importance_and_relevance": 0.1895,
+        "hprr__hprr_u": 1.859,
+        "review_inspector__overall_quality": 73.16333333333333,
+        "sxs_evaluation__constructive_value": {
+          "mode": "b",
+          "distribution": {
+            "b": 0.65,
+            "a": 0.35
+          },
+          "n": 20
+        },
+        "hprr__example": 0.0785,
+        "pairwise_comparison__technical_accuracy": {
+          "mode": "b",
+          "distribution": {
+            "b": 0.45,
+            "a": 0.3,
+            "tie": 0.2,
+            "no_match": 0.05
+          },
+          "n": 20
+        },
+        "depth_of_analysis__existing_literature_comparison": 0.65,
+        "depth_of_analysis__theoretical_contributions": 0.6,
+        "hprr__results_and_discussion": 0.202,
+        "depth_of_analysis__methodological_scrutiny": 0.85,
+        "depth_of_analysis__logical_gaps_identification": 0.9166666666666666,
+        "hprr__praise": 0.24,
+        "hprr__hprr_h": 0.06664,
+        "depth_of_analysis__results_interpretation": 0.75,
+        "pairwise_comparison__constructive_value": {
+          "mode": "b",
+          "distribution": {
+            "b": 0.55,
+            "a": 0.35,
+            "tie": 0.05,
+            "no_match": 0.05
+          },
+          "n": 20
+        },
+        "review_inspector__actionability": 4.157500000000001,
+        "depth_of_analysis__depth_of_analysis": 0.7533333333333333,
+        "sxs_evaluation__novelty_and_significance": {
+          "mode": "b",
+          "distribution": {
+            "b": 0.5,
+            "tie": 0.35,
+            "a": 0.15
+          },
+          "n": 20
+        },
+        "pairwise_comparison__analytical_depth": {
+          "mode": "a",
+          "distribution": {
+            "a": 0.5,
+            "b": 0.3,
+            "tie": 0.15,
+            "no_match": 0.05
+          },
+          "n": 20
+        }
+      },
+      "per_paper": [
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.6666666666666666,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.6666666666666666,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.7333333333333333,
+              "total_insights": 26.0,
+              "actionable_insights": 26.0,
+              "actionability_score": 1.0
+            },
+            "REMOR": {
+              "criticism": 0.33,
+              "example": 0.11,
+              "importance_and_relevance": 0.17,
+              "materials_and_methods": 0.33,
+              "praise": 0.22,
+              "presentation_and_reporting": 0.22,
+              "results_and_discussion": 0.11,
+              "suggestion_and_solution": 0.22
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.25,
+                "constructiveness": 4.5,
+                "clarity_and_readability": 4.5,
+                "relevance_alignment": 5.0,
+                "fairness": 4.5,
+                "actionability": 4.5,
+                "usage_of_technical_terms": 4.75,
+                "comprehensiveness": 4.0,
+                "overall_score_100": 82.0,
+                "overall_quality": 60.75
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.6666666666666666,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.0,
+              "logical_gaps_identification": 0.6666666666666666,
+              "overall_depth": 0.5333333333333333,
+              "total_insights": 32.0,
+              "actionable_insights": 24.0,
+              "actionability_score": 0.75
+            },
+            "REMOR": {
+              "criticism": 0.41,
+              "example": 0.06,
+              "importance_and_relevance": 0.12,
+              "materials_and_methods": 0.53,
+              "praise": 0.24,
+              "presentation_and_reporting": 0.24,
+              "results_and_discussion": 0.35,
+              "suggestion_and_solution": 0.06
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.25,
+                "constructiveness": 4.25,
+                "clarity_and_readability": 4.25,
+                "relevance_alignment": 5.0,
+                "fairness": 4.25,
+                "actionability": 4.5,
+                "usage_of_technical_terms": 4.5,
+                "comprehensiveness": 4.25,
+                "overall_score_100": 82.5,
+                "overall_quality": 82.5
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.0,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 1.0,
+              "theoretical_contributions": 0.6666666666666666,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.7333333333333333,
+              "total_insights": 39.0,
+              "actionable_insights": 38.0,
+              "actionability_score": 0.9743589743589743
+            },
+            "REMOR": {
+              "criticism": 0.46,
+              "example": 0.07,
+              "importance_and_relevance": 0.25,
+              "materials_and_methods": 0.54,
+              "praise": 0.12,
+              "presentation_and_reporting": 0.11,
+              "results_and_discussion": 0.29,
+              "suggestion_and_solution": 0.04
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 3.6666666666666665,
+                "constructiveness": 4.333333333333333,
+                "clarity_and_readability": 3.6666666666666665,
+                "relevance_alignment": 5.0,
+                "fairness": 3.6666666666666665,
+                "actionability": 4.0,
+                "usage_of_technical_terms": 4.666666666666667,
+                "comprehensiveness": 4.0,
+                "overall_score_100": 72.66666666666667,
+                "overall_quality": 72.66666666666667
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.6666666666666666,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 1.0,
+              "theoretical_contributions": 0.6666666666666666,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.8666666666666666,
+              "total_insights": 26.0,
+              "actionable_insights": 24.0,
+              "actionability_score": 0.9230769230769231
+            },
+            "REMOR": {
+              "criticism": 0.5,
+              "example": 0.12,
+              "importance_and_relevance": 0.06,
+              "materials_and_methods": 0.44,
+              "praise": 0.19,
+              "presentation_and_reporting": 0.12,
+              "results_and_discussion": 0.25,
+              "suggestion_and_solution": 0.31
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 3.25,
+                "constructiveness": 3.25,
+                "clarity_and_readability": 3.75,
+                "relevance_alignment": 5.0,
+                "fairness": 3.75,
+                "actionability": 3.0,
+                "usage_of_technical_terms": 4.0,
+                "comprehensiveness": 3.25,
+                "overall_score_100": 64.75,
+                "overall_quality": 64.75
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 1.0,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 1.0,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.9333333333333333,
+              "total_insights": 32.0,
+              "actionable_insights": 32.0,
+              "actionability_score": 1.0
+            },
+            "REMOR": {
+              "criticism": 0.56,
+              "example": 0.08,
+              "importance_and_relevance": 0.13,
+              "materials_and_methods": 0.51,
+              "praise": 0.08,
+              "presentation_and_reporting": 0.1,
+              "results_and_discussion": 0.33,
+              "suggestion_and_solution": 0.13
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 3.5,
+                "clarity_and_readability": 4.5,
+                "relevance_alignment": 5.0,
+                "fairness": 4.0,
+                "actionability": 3.75,
+                "usage_of_technical_terms": 4.75,
+                "comprehensiveness": 3.5,
+                "overall_score_100": 75.5,
+                "overall_quality": 75.5
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 1.0,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.3333333333333333,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.8,
+              "total_insights": 34.0,
+              "actionable_insights": 31.0,
+              "actionability_score": 0.9117647058823529
+            },
+            "REMOR": {
+              "criticism": 0.48,
+              "example": 0.04,
+              "importance_and_relevance": 0.16,
+              "materials_and_methods": 0.56,
+              "praise": 0.32,
+              "presentation_and_reporting": 0.16,
+              "results_and_discussion": 0.08,
+              "suggestion_and_solution": 0.24
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 4.5,
+                "clarity_and_readability": 4.75,
+                "relevance_alignment": 5.0,
+                "fairness": 4.5,
+                "actionability": 4.5,
+                "usage_of_technical_terms": 4.75,
+                "comprehensiveness": 3.75,
+                "overall_score_100": 81.25,
+                "overall_quality": 61.75
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.3333333333333333,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.6666666666666666,
+              "logical_gaps_identification": 0.6666666666666666,
+              "overall_depth": 0.6,
+              "total_insights": 32.0,
+              "actionable_insights": 30.0,
+              "actionability_score": 0.9375
+            },
+            "REMOR": {
+              "criticism": 0.08,
+              "example": 0.15,
+              "importance_and_relevance": 0.23,
+              "materials_and_methods": 0.46,
+              "praise": 0.38,
+              "presentation_and_reporting": 0.08,
+              "results_and_discussion": 0.23,
+              "suggestion_and_solution": 0.15
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 4.25,
+                "clarity_and_readability": 4.25,
+                "relevance_alignment": 5.0,
+                "fairness": 4.25,
+                "actionability": 4.5,
+                "usage_of_technical_terms": 4.75,
+                "comprehensiveness": 3.75,
+                "overall_score_100": 80.75,
+                "overall_quality": 80.75
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.6666666666666666,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.3333333333333333,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.7333333333333333,
+              "total_insights": 23.0,
+              "actionable_insights": 21.0,
+              "actionability_score": 0.9130434782608695
+            },
+            "REMOR": {
+              "criticism": 0.43,
+              "example": 0.1,
+              "importance_and_relevance": 0.14,
+              "materials_and_methods": 0.48,
+              "praise": 0.29,
+              "presentation_and_reporting": 0.33,
+              "results_and_discussion": 0.14,
+              "suggestion_and_solution": 0.19
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 4.5,
+                "clarity_and_readability": 4.5,
+                "relevance_alignment": 5.0,
+                "fairness": 4.25,
+                "actionability": 4.5,
+                "usage_of_technical_terms": 4.75,
+                "comprehensiveness": 4.0,
+                "overall_score_100": 81.25,
+                "overall_quality": 81.25
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.6666666666666666,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 1.0,
+              "theoretical_contributions": 1.0,
+              "logical_gaps_identification": 0.6666666666666666,
+              "overall_depth": 0.8666666666666666,
+              "total_insights": 29.0,
+              "actionable_insights": 29.0,
+              "actionability_score": 1.0
+            },
+            "REMOR": {
+              "criticism": 0.37,
+              "example": 0.07,
+              "importance_and_relevance": 0.33,
+              "materials_and_methods": 0.37,
+              "praise": 0.19,
+              "presentation_and_reporting": 0.04,
+              "results_and_discussion": 0.26,
+              "suggestion_and_solution": 0.07
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 3.75,
+                "constructiveness": 4.0,
+                "clarity_and_readability": 4.0,
+                "relevance_alignment": 5.0,
+                "fairness": 4.0,
+                "actionability": 3.5,
+                "usage_of_technical_terms": 4.5,
+                "comprehensiveness": 3.75,
+                "overall_score_100": 76.25,
+                "overall_quality": 76.25
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 1.0,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.6666666666666666,
+              "logical_gaps_identification": 0.6666666666666666,
+              "overall_depth": 0.7333333333333333,
+              "total_insights": 32.0,
+              "actionable_insights": 30.0,
+              "actionability_score": 0.9375
+            },
+            "REMOR": {
+              "criticism": 0.18,
+              "example": 0.09,
+              "importance_and_relevance": 0.36,
+              "materials_and_methods": 0.36,
+              "praise": 0.55,
+              "presentation_and_reporting": 0.09,
+              "results_and_discussion": 0.27,
+              "suggestion_and_solution": 0.0
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 4.25,
+                "clarity_and_readability": 4.75,
+                "relevance_alignment": 5.0,
+                "fairness": 4.25,
+                "actionability": 4.25,
+                "usage_of_technical_terms": 5.0,
+                "comprehensiveness": 3.75,
+                "overall_score_100": 80.0,
+                "overall_quality": 80.0
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.0,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.0,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.5333333333333333,
+              "total_insights": 28.0,
+              "actionable_insights": 26.0,
+              "actionability_score": 0.9285714285714286
+            },
+            "REMOR": {
+              "criticism": 0.41,
+              "example": 0.24,
+              "importance_and_relevance": 0.24,
+              "materials_and_methods": 0.59,
+              "praise": 0.18,
+              "presentation_and_reporting": 0.06,
+              "results_and_discussion": 0.18,
+              "suggestion_and_solution": 0.35
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 4.5,
+                "clarity_and_readability": 4.5,
+                "relevance_alignment": 5.0,
+                "fairness": 4.25,
+                "actionability": 4.75,
+                "usage_of_technical_terms": 4.75,
+                "comprehensiveness": 3.5,
+                "overall_score_100": 80.5,
+                "overall_quality": 80.5
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.3333333333333333,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.3333333333333333,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.6,
+              "total_insights": 25.0,
+              "actionable_insights": 24.0,
+              "actionability_score": 0.96
+            },
+            "REMOR": {
+              "criticism": 0.24,
+              "example": 0.0,
+              "importance_and_relevance": 0.24,
+              "materials_and_methods": 0.47,
+              "praise": 0.35,
+              "presentation_and_reporting": 0.12,
+              "results_and_discussion": 0.35,
+              "suggestion_and_solution": 0.41
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.25,
+                "constructiveness": 4.25,
+                "clarity_and_readability": 4.5,
+                "relevance_alignment": 5.0,
+                "fairness": 4.25,
+                "actionability": 4.25,
+                "usage_of_technical_terms": 4.75,
+                "comprehensiveness": 3.75,
+                "overall_score_100": 80.0,
+                "overall_quality": 59.25
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.3333333333333333,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.3333333333333333,
+              "logical_gaps_identification": 0.6666666666666666,
+              "overall_depth": 0.5333333333333333,
+              "total_insights": 27.0,
+              "actionable_insights": 25.0,
+              "actionability_score": 0.9259259259259259
+            },
+            "REMOR": {
+              "criticism": 0.35,
+              "example": 0.06,
+              "importance_and_relevance": 0.29,
+              "materials_and_methods": 0.35,
+              "praise": 0.18,
+              "presentation_and_reporting": 0.0,
+              "results_and_discussion": 0.18,
+              "suggestion_and_solution": 0.06
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 3.75,
+                "constructiveness": 3.75,
+                "clarity_and_readability": 4.25,
+                "relevance_alignment": 5.0,
+                "fairness": 4.25,
+                "actionability": 3.75,
+                "usage_of_technical_terms": 4.25,
+                "comprehensiveness": 3.75,
+                "overall_score_100": 75.0,
+                "overall_quality": 75.0
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.6666666666666666,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 1.0,
+              "theoretical_contributions": 1.0,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.9333333333333333,
+              "total_insights": 31.0,
+              "actionable_insights": 31.0,
+              "actionability_score": 1.0
+            },
+            "REMOR": {
+              "criticism": 0.48,
+              "example": 0.03,
+              "importance_and_relevance": 0.18,
+              "materials_and_methods": 0.38,
+              "praise": 0.18,
+              "presentation_and_reporting": 0.3,
+              "results_and_discussion": 0.12,
+              "suggestion_and_solution": 0.15
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 4.0,
+                "clarity_and_readability": 4.5,
+                "relevance_alignment": 5.0,
+                "fairness": 4.0,
+                "actionability": 4.25,
+                "usage_of_technical_terms": 5.0,
+                "comprehensiveness": 3.5,
+                "overall_score_100": 81.0,
+                "overall_quality": 81.0
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 1.0,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.3333333333333333,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.7333333333333333,
+              "total_insights": 24.0,
+              "actionable_insights": 23.0,
+              "actionability_score": 0.9583333333333334
+            },
+            "REMOR": {
+              "criticism": 0.36,
+              "example": 0.07,
+              "importance_and_relevance": 0.14,
+              "materials_and_methods": 0.21,
+              "praise": 0.43,
+              "presentation_and_reporting": 0.0,
+              "results_and_discussion": 0.07,
+              "suggestion_and_solution": 0.14
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 4.0,
+                "clarity_and_readability": 4.5,
+                "relevance_alignment": 5.0,
+                "fairness": 4.0,
+                "actionability": 4.0,
+                "usage_of_technical_terms": 4.25,
+                "comprehensiveness": 3.25,
+                "overall_score_100": 75.0,
+                "overall_quality": 58.0
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.3333333333333333,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 1.0,
+              "theoretical_contributions": 1.0,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.8,
+              "total_insights": 29.0,
+              "actionable_insights": 28.0,
+              "actionability_score": 0.9655172413793104
+            },
+            "REMOR": {
+              "criticism": 0.33,
+              "example": 0.0,
+              "importance_and_relevance": 0.08,
+              "materials_and_methods": 0.42,
+              "praise": 0.33,
+              "presentation_and_reporting": 0.0,
+              "results_and_discussion": 0.08,
+              "suggestion_and_solution": 0.5
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 3.8,
+                "constructiveness": 4.4,
+                "clarity_and_readability": 4.2,
+                "relevance_alignment": 5.0,
+                "fairness": 4.2,
+                "actionability": 4.4,
+                "usage_of_technical_terms": 4.8,
+                "comprehensiveness": 3.8,
+                "overall_score_100": 79.6,
+                "overall_quality": 79.6
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 1.0,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 0.6666666666666666,
+              "theoretical_contributions": 0.6666666666666666,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.8666666666666666,
+              "total_insights": 33.0,
+              "actionable_insights": 28.0,
+              "actionability_score": 0.8484848484848485
+            },
+            "REMOR": {
+              "criticism": 0.44,
+              "example": 0.04,
+              "importance_and_relevance": 0.32,
+              "materials_and_methods": 0.44,
+              "praise": 0.0,
+              "presentation_and_reporting": 0.28,
+              "results_and_discussion": 0.24,
+              "suggestion_and_solution": 0.28
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 3.75,
+                "constructiveness": 4.25,
+                "clarity_and_readability": 4.5,
+                "relevance_alignment": 5.0,
+                "fairness": 4.0,
+                "actionability": 4.5,
+                "usage_of_technical_terms": 5.0,
+                "comprehensiveness": 4.0,
+                "overall_score_100": 78.5,
+                "overall_quality": 61.5
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 0.6666666666666666,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 1.0,
+              "theoretical_contributions": 0.6666666666666666,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.8666666666666666,
+              "total_insights": 26.0,
+              "actionable_insights": 26.0,
+              "actionability_score": 1.0
+            },
+            "REMOR": {
+              "criticism": 0.32,
+              "example": 0.16,
+              "importance_and_relevance": 0.21,
+              "materials_and_methods": 0.47,
+              "praise": 0.37,
+              "presentation_and_reporting": 0.16,
+              "results_and_discussion": 0.37,
+              "suggestion_and_solution": 0.26
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 4.0,
+                "constructiveness": 4.25,
+                "clarity_and_readability": 4.25,
+                "relevance_alignment": 5.0,
+                "fairness": 4.5,
+                "actionability": 4.25,
+                "usage_of_technical_terms": 5.0,
+                "comprehensiveness": 4.0,
+                "overall_score_100": 80.75,
+                "overall_quality": 80.75
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 1.0,
+              "methodological_scrutiny": 0.6666666666666666,
+              "results_interpretation": 0.0,
+              "theoretical_contributions": 0.6666666666666666,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 0.6666666666666666,
+              "total_insights": 29.0,
+              "actionable_insights": 28.0,
+              "actionability_score": 0.9655172413793104
+            },
+            "REMOR": {
+              "criticism": 0.47,
+              "example": 0.0,
+              "importance_and_relevance": 0.06,
+              "materials_and_methods": 0.53,
+              "praise": 0.06,
+              "presentation_and_reporting": 0.24,
+              "results_and_discussion": 0.06,
+              "suggestion_and_solution": 0.18
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 3.5,
+                "constructiveness": 4.25,
+                "clarity_and_readability": 4.0,
+                "relevance_alignment": 5.0,
+                "fairness": 4.0,
+                "actionability": 4.25,
+                "usage_of_technical_terms": 4.25,
+                "comprehensiveness": 3.75,
+                "overall_score_100": 74.25,
+                "overall_quality": 74.25
+              }
+            ]
+          }
+        },
+        {
+          "llm_judge": {
+            "ReviewEval": {
+              "existing_literature_comparison": 1.0,
+              "methodological_scrutiny": 1.0,
+              "results_interpretation": 1.0,
+              "theoretical_contributions": 1.0,
+              "logical_gaps_identification": 1.0,
+              "overall_depth": 1.0,
+              "total_insights": 28.0,
+              "actionable_insights": 24.0,
+              "actionability_score": 0.8571428571428571
+            },
+            "REMOR": {
+              "criticism": 0.36,
+              "example": 0.08,
+              "importance_and_relevance": 0.08,
+              "materials_and_methods": 0.42,
+              "praise": 0.14,
+              "presentation_and_reporting": 0.03,
+              "results_and_discussion": 0.08,
+              "suggestion_and_solution": 0.14
+            },
+            "RottenReviews": [
+              {
+                "objectivity": 3.75,
+                "constructiveness": 3.75,
+                "clarity_and_readability": 4.25,
+                "relevance_alignment": 5.0,
+                "fairness": 4.5,
+                "actionability": 3.75,
+                "usage_of_technical_terms": 4.75,
+                "comprehensiveness": 4.0,
+                "overall_score_100": 77.25,
+                "overall_quality": 77.25
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

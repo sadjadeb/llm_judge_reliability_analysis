@@ -1,0 +1,6 @@
+# LLM-as-judge pipeline + surface-sensitivity analysis
+openai==2.16.0
+python-dotenv==1.1.1
+numpy==1.26.4
+pandas==2.2.3
+scipy==1.14.1
