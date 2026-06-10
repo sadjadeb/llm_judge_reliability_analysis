@@ -33,6 +33,26 @@ from four prior peer-review evaluation works (ReviewEval, REMOR,
 RottenReviews, ScholarPeer), using **two judge LLMs** (GPT-5-mini and
 Gemini-2.5-Flash) so the conclusions are not specific to one judge.
 
+## The 29 metrics
+
+Drawn from four prior peer-review evaluation works:
+
+| Source | Metrics analyzed |
+|---|---|
+| **ReviewEval** (9) | Literature Comparison, Methodological Scrutiny, Results Interpretation, Theoretical Contributions, Logical Gaps Identification, Overall Depth, Total Insights, Actionable Insights, Actionability Score |
+| **REMOR** (7) | Criticism, Example, Importance & Relevance, Materials & Methods, Praise, Results & Discussion, Suggestion & Solution |
+| **RottenReviews** (8) | Comprehensiveness, Objectivity, Fairness, Actionability, Constructiveness, Relevance Alignment, Overall Quality, Overall Score |
+| **ScholarPeer** (5) | Technical Accuracy, Constructive Value, Analytical Depth, Novelty & Significance, Overall |
+
+Three style/presentation metrics from these sources are excluded a priori
+(Presentation & Reporting from REMOR; Usage of Technical Terms and Clarity
+& Readability from RottenReviews), since they explicitly target writing
+form rather than content.
+
+The verbatim prompts used to score each metric are in `pipeline/prompts.py`,
+and `pipeline/metric_registry.py` holds the canonical metric list, scales,
+and exclusion set.
+
 ## Setup
 
 ```bash
