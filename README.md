@@ -1,8 +1,55 @@
 # Judging a Review by its Cover
 
-Code and precomputed results for the paper
+This repository contains the code, data, and precomputed results for the paper
 *Judging a Review by its Cover: A Reliability Analysis of LLM-based Peer
 Review Evaluation Metrics*.
+
+The paper (and this repo) tests whether automatic LLM-based metrics for
+peer-review quality actually measure the **content** of a review or just
+react to its **writing style**. The intuition: if a metric gives different
+scores to an original human review and to a rewrite of the same review that
+preserves the content but changes the wording, then the metric is being
+fooled by surface form.
+
+## How the test works
+
+For every metric and every (original, rewrite) review pair:
+
+1. Score the original human review **R** and the rewritten version **R′**
+   with the metric.
+2. Compute the per-pair difference `d = score(R′) − score(R)`.
+3. Run two statistical tests over the population of differences:
+
+   | Test | Question it answers | Verdict |
+   |---|---|---|
+   | **Wilcoxon signed-rank** | Does rewriting systematically shift scores? | If yes → metric is **Sensitive** to writing style (bad) |
+   | **TOST equivalence** | Is the shift small enough to be practically negligible? | If yes → metric is **Robust** under rewriting (good) |
+
+Both tests are applied at a Bonferroni-corrected threshold of `α = 0.05/29`.
+A metric can end up Sensitive, Robust, both, or neither.
+
+The pipeline runs this analysis over **29 content-oriented metrics** drawn
+from four prior peer-review evaluation works (ReviewEval, REMOR,
+RottenReviews, ScholarPeer), using **two different judge LLMs**
+(GPT-5-mini and Gemini-2.5-Flash) to check that findings are not
+judge-specific.
+
+## What you get
+
+`pipeline/run_analysis.py` writes a per-metric CSV with these columns:
+
+| Column | Meaning |
+|---|---|
+| `metric`, `source` | Metric name and its source paper |
+| `n_obs` | Number of paired observations |
+| `mean_delta`, `sd_delta` | Mean and SD of `d = score(R′) − score(R)` |
+| `delta_bound` | TOST equivalence bound `δ = 0.2 × sd_delta` |
+| `wilcoxon_p` | Wilcoxon p-value (surface-sensitivity test) |
+| `tost_p` | TOST p-value (robustness test) |
+| `sensitive`, `robust` | Booleans: `p < 0.05/29 ≈ 0.00172` |
+
+One CSV per judge. The reproduction is fully offline — the per-review
+scores are already cached under `data/results/`.
 
 ## Setup
 
@@ -12,72 +59,79 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-API keys are only needed if you re-score reviews (Path 2). The bundled
-scores in `data/results/` are enough to reproduce Table 1.
+API keys are only needed if you re-score reviews from scratch (next section).
 
-## Path 1 — Reproduce Table 1 (no API needed)
+## Reproduce the results
 
 ```bash
-python pipeline/run_analysis.py           # GPT-5-mini  → results/results_gpt5mini.csv
-python pipeline/run_analysis.py --gemini  # Gemini-2.5-Flash → results/results_gemini.csv
+python pipeline/run_analysis.py           # → results/results_gpt5mini.csv
+python pipeline/run_analysis.py --gemini  # → results/results_gemini.csv
 ```
 
-Each CSV has 29 rows (one per metric) and these columns:
+Each run loads the cached scores from `data/results/`, computes paired
+differences, runs the two tests over the 29 metrics, and writes the CSV.
 
-| Column | Meaning |
-|---|---|
-| `metric`, `source` | Metric name and its source paper (ReviewEval / REMOR / RottenReviews / ScholarPeer) |
-| `n_obs` | Number of paired observations |
-| `mean_delta`, `sd_delta` | Mean and SD of the paired differences `d = S_m(R′) − S_m(R)` |
-| `delta_bound` | TOST equivalence bound `δ = 0.2 × sd_delta` |
-| `wilcoxon_p` | Wilcoxon signed-rank p-value (surface-sensitivity test) |
-| `tost_p` | TOST p-value (robustness test) |
-| `sensitive`, `robust` | Booleans: `p < 0.05/29 ≈ 0.00172` |
+## Re-score reviews with a different judge LLM
 
-## Path 2 — Re-score reviews with a different judge
+Optional. Slow and API-bound. Skip if you only want to reproduce the
+bundled results.
 
 ```bash
 export OPENAI_API_KEY=...    # or GEMINI_API_KEY for Gemini
 
-# Score human + rewritten with the point-wise families (ReviewEval/REMOR/RottenReviews)
+# Score the original human reviews and the rewrites with the point-wise
+# metric families (ReviewEval / REMOR / RottenReviews):
 python pipeline/run_llm_judge.py pointwise --only-human --sample 0
 python pipeline/run_llm_judge.py pointwise --only-rewritten --sample 0
 
-# Score with ScholarPeer (AI vs paired human)
+# Score with ScholarPeer (compares the AI/rewritten review against the
+# paired original human review on a 1–10 scale):
 python pipeline/run_llm_judge.py scholarpeer --full --ttype rewritten --with-paper
 ```
 
-New scores are written into `data/results/`; afterwards rerun Path 1 to
-get the updated CSVs.
-
 Common flags: `--judge-model`, `--judge-base-url`, `--judge-api-key-env`,
 `--model-filter`, `--sample`, `--skip-existing`.
+
+New scores land in `data/results/`. Re-run the analysis step to pick them up.
 
 ## Repo layout
 
 ```
 .
 ├── pipeline/
-│   ├── run_analysis.py        # Wilcoxon + TOST → results/*.csv
-│   ├── run_llm_judge.py       # CLI to (re-)score reviews
-│   ├── collect_pairs.py       # builds paired diffs from data/results/
-│   ├── metric_registry.py     # 29-metric inventory + Bonferroni α
-│   ├── review_metrics.py      # LLMJudge class
+│   ├── run_analysis.py        # Wilcoxon + TOST tests → results/*.csv
+│   ├── run_llm_judge.py       # CLI to (re-)score reviews with an LLM judge
+│   ├── collect_pairs.py       # builds paired diffs from cached scores
+│   ├── metric_registry.py     # 29-metric inventory + α correction constants
+│   ├── review_metrics.py      # LLMJudge class (one method per metric family)
 │   └── prompts.py             # verbatim prompts from the 4 source papers
 ├── data/
-│   ├── reviews/               # input review text (JSONL)
-│   └── results/               # cached judge scores (JSON)
-├── human_annotation/          # rewrite-faithfulness annotation study (CSVs + Guidelines.pdf)
-└── results/                   # Wilcoxon + TOST outputs (CSV)
+│   ├── reviews/               # input review text (JSONL) — 8 venue-years × 6 rewrite models
+│   └── results/               # cached per-review judge scores (JSON)
+├── human_annotation/          # rewrite-faithfulness validation study
+└── results/                   # per-metric CSV outputs of the two tests
 ```
 
-See `data/README.md` for the full JSON/JSONL key schema.
+See `data/README.md` for the JSON/JSONL key schema.
+
+## What's in the data
+
+- **Venues**: ICLR and NeurIPS, 2021–2024 (8 venue-years)
+- **Rewrite models** (6, used to generate the meaning-preserving rewrites):
+  Gemini-2.5-Flash, GPT-5, o4-mini, Claude-Haiku-4.5, DeepSeek-R1,
+  Llama-4-Scout
+- **Judge LLMs** (2, used to score reviews against each metric):
+  GPT-5-mini (primary), Gemini-2.5-Flash (replication)
 
 ## Human annotation
 
-`human_annotation/` contains the 3 annotator CSVs (50 + 25 + 25 pairs) and
-the `Guidelines.pdf` shown to annotators for the rewrite-faithfulness
-validation study described in the paper.
+The whole approach assumes the rewrites actually preserve content. To
+validate this, three graduate-student annotators rated 50 (original,
+rewrite) pairs (each pair seen by two raters) on a 1–5 faithfulness scale
+and a yes/no "would the author get the same feedback?" judgment.
+
+`human_annotation/Guidelines.pdf` is the instruction sheet given to
+annotators. The three `annotator_*.csv` files contain their ratings.
 
 ## License
 
