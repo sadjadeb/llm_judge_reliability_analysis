@@ -65,7 +65,7 @@ API keys are only needed if you want to re-score reviews from scratch (last
 section). The bundled scores in `data/results/` are enough to reproduce
 the published results.
 
-## Reproduce the results
+## Step 1 — Run the Wilcoxon + TOST analysis
 
 Two commands, one per judge LLM:
 
@@ -76,9 +76,9 @@ python pipeline/run_analysis.py --gemini  # Gemini-2.5-Flash → results/results
 
 Each run loads the cached per-review scores from `data/results/`, computes
 paired differences, runs the Wilcoxon and TOST tests over the 29 metrics,
-and writes a CSV (described next).
+and writes the CSV described in Step 2.
 
-## Output: the per-metric CSV
+## Step 2 — Read the per-metric CSV
 
 Each CSV has 29 rows (one per metric). The columns are the *outputs of the
 two tests* run on that metric's paired differences `d = score(R′) − score(R)`
@@ -144,12 +144,32 @@ See `data/README.md` for the JSON/JSONL key schema.
 
 ## What's in the data
 
-- **Venues**: ICLR and NeurIPS, 2021–2024 (8 venue-years)
-- **Rewrite models** (6, used to produce the meaning-preserving rewrites):
-  Gemini-2.5-Flash, GPT-5, o4-mini, Claude-Haiku-4.5, DeepSeek-R1,
-  Llama-4-Scout
-- **Judge LLMs** (2, used to score reviews against the metrics):
-  GPT-5-mini (primary) and Gemini-2.5-Flash (replication)
+The dataset is taken from PeerPrism and covers ICLR/NeurIPS 2021–2024.
+
+| Item | Count | Notes |
+|---|---:|---|
+| Venue-years | 8 | ICLR 2021–2024 + NeurIPS 2021–2024 |
+| Papers | 160 | 20 per venue-year |
+| Original human reviews **R** | 674 | Pulled from OpenReview, anonymized |
+| Meaning-preserving rewrites **R′** | 4,044 | Average of ~6 rewrites per original (one per rewrite model) |
+| Rewrite models | 6 | Used to generate `R′`: Gemini-2.5-Flash, GPT-5, o4-mini, Claude-Haiku-4.5, DeepSeek-R1, Llama-4-Scout |
+| Judge LLMs | 2 | Used to score reviews: **GPT-5-mini** (primary) and **Gemini-2.5-Flash** (replication) |
+
+What each rewrite *preserves* (so `score(R)` and `score(R′)` are comparable):
+the original review's judgments, arguments, strengths, weaknesses, and
+recommendations. What it *changes*: wording, phrasing, and presentation.
+
+Files:
+
+- **Inputs** — review text (JSONL):
+  `data/reviews/human_reviews/{venue}{year}.jsonl` (8 files, one per venue-year)
+  and `data/reviews/rewritten/{venue}{year}_{provider}_{model}.jsonl`
+  (48 files = 8 × 6 rewrite models).
+- **Cached judge scores** — per-review scores keyed by metric (JSON):
+  `data/results/human_reviews/{venue}{year}_{judge}.json` and
+  `data/results/rewritten/{venue}{year}/{judge}.json` (32 files = 8 × 2 × 2).
+
+See `data/README.md` for the JSON/JSONL key schema.
 
 ## Human annotation
 
