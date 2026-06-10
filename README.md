@@ -9,13 +9,13 @@ analytical framework, and discussion of findings, see the paper itself.
 
 ## What you can do with this repo
 
-| Goal | Command | Time |
-|---|---|---|
-| Reproduce Table 1 (GPT-5-mini) | `python pipeline/run_analysis.py` | ~3 s |
-| Reproduce the Gemini replication | `python pipeline/run_analysis.py --gemini` | ~3 s |
-| Re-score reviews with a different judge | `python pipeline/run_llm_judge.py ...` | hours, API-bound |
-| Inspect a per-metric paired-diff CSV | open `results/results_{gpt5mini,gemini}.csv` | — |
-| Inspect raw judge scores per review | open any `data/results/{condition}/{year}/{judge}.json` | — |
+| Goal | Command |
+|---|---|
+| Reproduce Table 1 (GPT-5-mini) | `python pipeline/run_analysis.py` |
+| Reproduce the Gemini replication | `python pipeline/run_analysis.py --gemini` |
+| Re-score reviews with a different judge | `python pipeline/run_llm_judge.py ...` |
+| Inspect a per-metric paired-diff CSV | open `results/results_{gpt5mini,gemini}.csv` |
+| Inspect raw judge scores per review | open any `data/results/{condition}/{year}/{judge}.json` |
 
 Everything needed for the first two rows is already in the repo — no API key
 needed.
@@ -87,34 +87,105 @@ python pipeline/run_analysis.py
 python pipeline/run_analysis.py --gemini
 ```
 
-Each run:
+### What "Table 1" actually contains
+
+Table 1 of the paper is a 29-row per-metric report: each metric (drawn from
+ReviewEval, REMOR, RottenReviews, ScholarPeer) gets one row with
+`σ`, `δ`, mean Δ, two p-values, two booleans, and a cross-judge consistency
+flag. The CSVs produced by `run_analysis.py` carry every column needed to
+rebuild the table — see the column-by-column meanings in the **Output** block
+below.
+
+### The two tests, in one sentence each
+
+For each metric *m* we form per-pair differences
+`d_i = S_m(R′_i) − S_m(R_i)` (point-wise metrics) or `d_i = score_i − 5.0`
+(ScholarPeer, anchored at the human baseline). Then:
+
+| Test | Null hypothesis | What rejection means |
+|---|---|---|
+| **Wilcoxon signed-rank** (two-sided) | `median(d) = 0` — the metric reacts the same way to rewrites and originals | The metric is **Sensitive**: rewriting systematically shifts the score |
+| **TOST** equivalence (one-sample, max of two one-sided tests) | `\|μ\| ≥ δ_m` — the true shift is at least the equivalence bound `δ_m = 0.2 × SD(d)` | The metric is **Robust**: the shift is small enough to be practically negligible (Cohen's *d* < 0.2) |
+
+Both tests use the same Bonferroni-corrected threshold
+**α = 0.05 / 29 ≈ 0.00172** (`ALPHA_CORRECTED` in `metric_registry.py`).
+The two tests are independent — a metric can be neither, only one, or both
+(see the four-region classification at the end of this section).
+
+### What `run_analysis.py` does step-by-step
 
 1. Loads cached scores from `data/results/human_reviews/` and
    `data/results/rewritten/` via `collect_pairs.collect_observations(judge=…)`.
-2. Computes paired differences (`S_m(R′) − S_m(R)` for point-wise metrics;
-   `score − 5.0` for ScholarPeer's human-anchored 1–10 scale).
-3. Drops the 3 a-priori-excluded style/presentation metrics (`EXCLUDED_KEYS`
-   in `pipeline/metric_registry.py`).
-4. For each of the 29 retained metrics runs Wilcoxon (sensitivity) and TOST
-   (robustness), applies Bonferroni at `α = 0.05/29 ≈ 0.00172`, and writes
-   the CSV.
+2. Computes the paired differences described above for every (metric, paper,
+   generator) triple.
+3. Drops the 3 a-priori-excluded style/presentation metrics
+   (`EXCLUDED_KEYS` in `pipeline/metric_registry.py`: Presentation &
+   Reporting, Usage of Technical Terms, Clarity & Readability).
+4. For each of the 29 retained metrics computes `σ`, `δ`, mean Δ,
+   `wilcoxon_p`, `tost_p`, and sets the `sensitive` / `robust` flags by
+   comparing each p-value to `ALPHA_CORRECTED`.
+5. Prints a region-by-region summary to stdout and writes the CSV.
 
-Each CSV has one row per metric with 11 columns:
+### Expected input
+
+Both commands read **only** from `data/results/` — no review text, no API
+calls. Required files:
+
+| Path | Role | n files |
+|---|---|---|
+| `data/results/human_reviews/{venue}{year}_{judge}.json` | Baseline scores `S_m(R)` for the 8 venue-years | 16 (8 × 2 judges) |
+| `data/results/rewritten/{venue}{year}/{judge}.json` | Rewrite scores `S_m(R′)` per generator model, plus `ScholarPeer.results[]` array | 16 (8 × 2 judges) |
+
+Each `{judge}.json` is a dict keyed by generator-model (e.g.
+`ICLR2024_openai_gpt-5`); inside each block, `per_paper[i].llm_judge`
+nests the four metric families (`ReviewEval`, `REMOR`, `RottenReviews`,
+`ScholarPeer`). See `data/README.md` for the full key schema.
+
+### Expected output
 
 ```
-metric_key, metric, source, n_obs, mean_delta, sd_delta, delta_bound,
-wilcoxon_p, tost_p, sensitive, robust
+results/
+├── results_gpt5mini.csv   # produced by  python pipeline/run_analysis.py
+└── results_gemini.csv     # produced by  python pipeline/run_analysis.py --gemini
 ```
 
-`sensitive` and `robust` are booleans; the four-region classification used in
-the paper's Figure 1 is the joint of these two flags:
+Each CSV has 29 rows (one per retained metric) and 11 columns:
 
-| Wilcoxon | TOST | Region |
-|:---:|:---:|---|
-| ✓ | — | Sensitive only |
-| — | ✓ | Robust only |
-| ✓ | ✓ | Sensitive ∩ Robust |
-| — | — | Inconclusive |
+| Column | Type | Meaning |
+|---|---|---|
+| `metric_key` | str | Internal key, e.g. `ReviewEval__overall_depth` |
+| `metric` | str | Display name from Table 1 |
+| `source` | str | One of `ReviewEval`, `REMOR`, `RottenReviews`, `ScholarPeer` |
+| `n_obs` | int | Number of paired observations used in the tests |
+| `mean_delta` | float | Mean of `d_i` (column "Mean Δ" in Table 1) |
+| `sd_delta` | float | `σ_m` = standard deviation of `d_i` |
+| `delta_bound` | float | `δ_m = 0.2 × σ_m` (TOST equivalence bound) |
+| `wilcoxon_p` | float | Two-sided Wilcoxon signed-rank p-value |
+| `tost_p` | float | TOST p-value (max of two one-sided tests) |
+| `sensitive` | bool | `wilcoxon_p < ALPHA_CORRECTED` |
+| `robust` | bool | `tost_p < ALPHA_CORRECTED` |
+
+Stdout also prints a region-by-region summary (counts in each cell of the
+2×2 classification matrix and the totals).
+
+### Reading a row — the four-region classification
+
+The joint outcome of Wilcoxon + TOST partitions each metric into one of four
+regions used in the paper's Figure 1:
+
+| Wilcoxon | TOST | Region | What it means |
+|:---:|:---:|---|---|
+| ✓ | — | **Sensitive only** | Detectable shift; too large to call negligible |
+| — | ✓ | **Robust only** | No detectable shift; equivalence positively established |
+| ✓ | ✓ | **Sensitive ∩ Robust** | Detectable but practically negligible shift |
+| — | — | **Inconclusive** | No detectable shift, but equivalence not established |
+
+Expected reproduction counts with the bundled scores:
+
+| Judge | Sensitive total | Robust total | Sens ∩ Rob | Inconclusive |
+|---|---:|---:|---:|---:|
+| GPT-5-mini | 23 | 7 | 1 | 0 |
+| Gemini-2.5-Flash | 24 | 7 | 3 | 1 |
 
 ## Path 2: re-score reviews with a different judge
 
