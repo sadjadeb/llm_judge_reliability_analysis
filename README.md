@@ -33,7 +33,7 @@ from four prior peer-review evaluation works (ReviewEval, REMOR,
 RottenReviews, ScholarPeer), using **two judge LLMs** (GPT-5-mini and
 Gemini-2.5-Flash) so the conclusions are not specific to one judge.
 
-## The 29 metrics
+## Metrics
 
 Drawn from four prior peer-review evaluation works:
 
@@ -80,17 +80,21 @@ and writes a CSV (described next).
 
 ## Output: the per-metric CSV
 
-Each CSV has 29 rows (one per metric) and these columns:
+Each CSV has 29 rows (one per metric). The columns are the *outputs of the
+two tests* run on that metric's paired differences `d = score(R′) − score(R)`
+— first the input statistics, then the Wilcoxon result, then the TOST
+result, then the final classifications.
 
-| Column | Meaning |
-|---|---|
-| `metric`, `source` | Metric name and its source paper |
-| `n_obs` | Number of paired observations |
-| `mean_delta`, `sd_delta` | Mean and SD of `d = score(R′) − score(R)` |
-| `delta_bound` | TOST equivalence bound `δ = 0.2 × sd_delta` |
-| `wilcoxon_p` | Wilcoxon p-value (surface-sensitivity test) |
-| `tost_p` | TOST p-value (robustness test) |
-| `sensitive`, `robust` | Booleans: `True` iff the p-value < `0.05/29` |
+| Group | Column | Meaning |
+|---|---|---|
+| Identifier | `metric`, `source` | Metric name and its source paper |
+| Test input | `n_obs` | Number of paired observations the tests were run on |
+|  | `mean_delta`, `sd_delta` | Mean and SD of `d` — the summary of the population fed to both tests |
+| **Wilcoxon test** (surface sensitivity) | `wilcoxon_p` | Two-sided signed-rank p-value: how likely the observed shift would be if rewriting had no effect |
+|  | `sensitive` | `True` iff `wilcoxon_p < 0.05/29` — i.e. rewriting *systematically* changes the score |
+| **TOST test** (robustness) | `delta_bound` | Equivalence bound `δ = 0.2 × sd_delta` — the per-metric "negligible-shift" threshold |
+|  | `tost_p` | TOST p-value: how likely the true shift is *outside* the equivalence bound |
+|  | `robust` | `True` iff `tost_p < 0.05/29` — i.e. the shift is positively shown to be practically negligible |
 
 `run_analysis.py` also prints a region-by-region summary to stdout (how
 many metrics fall into each cell of the Sensitive × Robust 2×2 table).
