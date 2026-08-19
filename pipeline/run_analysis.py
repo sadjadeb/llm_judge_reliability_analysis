@@ -18,16 +18,10 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pingouin as pg
 from scipy import stats
 
 from collect_pairs import collect_observations
-
-
-def _tost_pvalue(diffs: np.ndarray, bound: float) -> float:
-    """One-sample TOST p-value (max of two one-sided tests)."""
-    t_lo, p_lo = stats.ttest_1samp(diffs, -bound, alternative="greater")
-    t_hi, p_hi = stats.ttest_1samp(diffs, bound, alternative="less")
-    return float(max(p_lo, p_hi))
 from metric_registry import (
     ALPHA_CORRECTED,
     EXCLUDED_KEYS,
@@ -60,7 +54,15 @@ def per_metric_stats(obs_df: pd.DataFrame) -> pd.DataFrame:
         sd_d = float(np.std(diffs, ddof=1)) if diffs.size > 1 else 0.0
         delta = 0.2 * sd_d
 
-        p_tost = _tost_pvalue(diffs, delta) if delta > 0 else 1.0
+        # pingouin.tost(x, y, bound) is two-sample; passing y=0 makes it
+        # equivalent to the one-sample TOST. The returned `pval` column is
+        # already max(p_lower, p_upper).
+        if delta > 0:
+            tost_result = pg.tost(diffs, np.zeros_like(diffs),
+                                  bound=delta, paired=False)
+            p_tost = float(tost_result["pval"].iloc[0])
+        else:
+            p_tost = 1.0
         robust = bool(p_tost < ALPHA_CORRECTED)
 
         rows.append({

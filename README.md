@@ -70,13 +70,18 @@ the published results.
 Two commands, one per judge LLM:
 
 ```bash
-python pipeline/run_analysis.py           # GPT-5-mini       → results/results_gpt5mini.csv
-python pipeline/run_analysis.py --gemini  # Gemini-2.5-Flash → results/results_gemini.csv
+python pipeline/run_analysis.py           # GPT-5-mini       → results/sensitivity_results_gpt5mini.csv
+python pipeline/run_analysis.py --gemini  # Gemini-2.5-Flash → results/sensitivity_results_gemini.csv
 ```
 
 Each run loads the cached per-review scores from `data/results/`, computes
 paired differences, runs the Wilcoxon and TOST tests over the 29 metrics,
 and writes the CSV described in Step 2.
+
+Pointwise metrics (ReviewEval, REMOR, RottenReviews) pair each rewrite with
+the original human review of the **same paper** using `(year, forum_id)`.
+List position/index is not used for pairing. ScholarPeer is not human-paired;
+it remains an anchor comparison `score − 5.0`.
 
 ## Step 2 — Read the per-metric CSV
 

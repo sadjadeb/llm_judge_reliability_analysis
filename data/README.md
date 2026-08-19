@@ -10,9 +10,9 @@
 ## `reviews/` — input JSONL
 
 ```
-reviews/
+data/reviews/
 ├── human_reviews/{venue}{year}.jsonl
-└── transformations/rewritten/{venue}{year}_{provider}_{model}.jsonl
+└── rewritten/{venue}{year}_{provider}_{model}.jsonl
 ```
 
 Paper-level keys: `venue`, `year`, `paper_id`, `forum_id`, `title`, `decision`, `reviews`.
@@ -58,8 +58,9 @@ Comparative AI-vs-human scores on 1–10 scale (5 = human baseline):
 ## Analysis inputs
 
 `pipeline/collect_pairs.py` computes paired differences:
-- Point-wise metrics: `diff = S_m(R′) − S_m(R)`
-- ScholarPeer: `diff = score − 5.0`
+- Point-wise metrics: `diff = S_m(R′) − S_m(R)`, joined by `(year, forum_id)`
+  (not list position/index)
+- ScholarPeer: `diff = score − 5.0` (anchor-based; not human-paired)
 
 Three metrics are excluded a priori from the 29-metric analysis (style/presentation
 by design): Presentation & Reporting, Usage of Technical Terms, Clarity & Readability.

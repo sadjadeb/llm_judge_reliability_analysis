@@ -105,13 +105,20 @@ def convert_human(judge: str) -> None:
             continue
         d = json.loads(src.read_text())
         sample = d.get("human", {}).get("llm_judge_sample", {})
+        jsonl = ROOT / f"data/reviews/human_reviews/{year}.jsonl"
+        forums = [json.loads(line)["forum_id"] for line in jsonl.open()] if jsonl.exists() else []
         new_pp = []
-        for entry in sample.get("per_paper", []):
+        per_paper = sample.get("per_paper", [])
+        indices = sample.get("evaluated_indices", list(range(len(per_paper))))
+        for idx, entry in zip(indices, per_paper):
             if "llm_judge" in entry:
                 nested = _nest_nested(entry["llm_judge"])
             else:
                 nested = _nest_flat(entry)
-            new_pp.append({"llm_judge": nested})
+            rec: dict = {"llm_judge": nested}
+            if idx < len(forums):
+                rec["forum_id"] = forums[idx]
+            new_pp.append(rec)
         out = {
             "human": {
                 "llm_judge_sample": {
@@ -145,9 +152,14 @@ def convert_rewritten(judge: str) -> None:
 
         out: dict = {}
         for mk, block in d.items():
+            jsonl = ROOT / f"data/reviews/rewritten/{mk}.jsonl"
+            forums = [json.loads(line)["forum_id"] for line in jsonl.open()] if jsonl.exists() else []
             new_pp = []
-            for entry in block.get("per_paper", []):
-                new_pp.append({"llm_judge": _nest_nested(entry.get("llm_judge", {}))})
+            for i, entry in enumerate(block.get("per_paper", [])):
+                rec: dict = {"llm_judge": _nest_nested(entry.get("llm_judge", {}))}
+                if i < len(forums):
+                    rec["forum_id"] = forums[i]
+                new_pp.append(rec)
             out[mk] = {"per_paper": new_pp}
             if mk in p1_sp and p1_sp[mk]:
                 out[mk]["ScholarPeer"] = p1_sp[mk]
